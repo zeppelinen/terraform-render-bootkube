@@ -10,6 +10,7 @@ spec:
     command:
     - ./hyperkube
     - controller-manager
+    - --flex-volume-plugin-dir=/opt/libexec/kubernetes/kubelet-plugins/volume/exec/
     - --allocate-node-cidrs=true
     - --cluster-cidr=${pod_cidr}
     - --service-cluster-ip-range=${service_cidr}
@@ -26,6 +27,9 @@ spec:
     - name: ssl-host
       mountPath: /etc/ssl/certs
       readOnly: true
+    - name: flex-volume-plugin-dir
+      mountPath: /opt/libexec/kubernetes/kubelet-plugins/volume/exec
+      readOnly: true
   hostNetwork: true
   volumes:
   - name: kubernetes
@@ -34,3 +38,6 @@ spec:
   - name: ssl-host
     hostPath:
       path: /usr/share/ca-certificates
+  - name: flex-volume-plugin-dir
+    hostPath:
+      path: /opt/libexec/kubernetes/kubelet-plugins/volume/exec

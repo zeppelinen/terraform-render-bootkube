@@ -41,6 +41,7 @@ spec:
         - ./hyperkube
         - controller-manager
         - --use-service-account-credentials
+        - --flex-volume-plugin-dir=/opt/libexec/kubernetes/kubelet-plugins/volume/exec/
         - --allocate-node-cidrs=true
         - --cloud-provider=${cloud_provider}
         - --cluster-cidr=${pod_cidr}
@@ -62,6 +63,9 @@ spec:
         - name: ssl-host
           mountPath: /etc/ssl/certs
           readOnly: true
+        - name: flex-volume-plugin-dir
+          mountPath: /opt/libexec/kubernetes/kubelet-plugins/volume/exec
+          readOnly: true
       nodeSelector:
         node-role.kubernetes.io/master: ""
       securityContext:
@@ -79,4 +83,7 @@ spec:
       - name: ssl-host
         hostPath:
           path: /usr/share/ca-certificates
+      - name: flex-volume-plugin-dir
+        hostPath:
+          path: /opt/libexec/kubernetes/kubelet-plugins/volume/exec
       dnsPolicy: Default # Don't use cluster DNS.
